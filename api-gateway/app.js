@@ -11,14 +11,16 @@ var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
+
 var apiCatalog = require("./routes/api-catalog");
-var indexRouter = require("./routes/index");
+var index = require("./routes/index");
 
 // Connect to MongoDB
-var mongoDB =
+/* var mongoDB =
   "mongodb+srv://admin:thisisapassword@buwebdev-cluster-1.j3npe.mongodb.net/api-gateway?retryWrites=true&w=majority";
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
@@ -29,8 +31,14 @@ mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error: "));
 db.once("open", function () {
-  console.log("Application connected to mLab MongoDB instance");
-});
+  console.log("Connection to the database was successful");
+}); */
+
+
+mongoose.connect("mongodb+srv://admin:thisisapassword@buwebdev-cluster-1.j3npe.mongodb.net/api-gateway?retryWrites=true&w=majority", {
+    promiseLibrary: require('bluebird')
+}).then ( () => console.log('Connection to the database was successful'))
+  .catch( (err) => console.error(err));
 
 var app = express();
 
@@ -44,14 +52,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
+app.use("/", index);
 app.use("/api", apiCatalog);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.use(function (req, res, next) {
+  next(createError(404));
 });
 
 // error handler

@@ -19,7 +19,7 @@ var userSchema = new mongoose.Schema({
 });
 
 // Exports our user schema
-var User = (module.exports = mongoose.model('User', userSchema));
+var User = (module.exports = mongoose.model("User", userSchema));
 
 // add user
 module.exports.add = (user, callback) => {
@@ -31,3 +31,9 @@ module.exports.add = (user, callback) => {
     var query = { _id: id };
     User.findById(query, callback);
   };
+
+// find user by email
+module.exports.getOne = (e, callback) => {
+  var query = { email: e };
+  User.findOne(query, callback);
+};

@@ -11,34 +11,21 @@ var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
-var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-mongoose.Promise = require("bluebird");
-
 var apiCatalog = require("./routes/api-catalog");
 var index = require("./routes/index");
 
 // Connect to MongoDB
-/* var mongoDB =
-  "mongodb+srv://admin:thisisapassword@buwebdev-cluster-1.j3npe.mongodb.net/api-gateway?retryWrites=true&w=majority";
-mongoose.connect(mongoDB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-mongoose.Promise = global.Promise;
-var db = mongoose.connection;
-db.on("error", console.error.bind(console, "MongoDB connection error: "));
-db.once("open", function () {
-  console.log("Connection to the database was successful");
-}); */
-
-
-mongoose.connect("mongodb+srv://admin:thisisapassword@buwebdev-cluster-1.j3npe.mongodb.net/api-gateway?retryWrites=true&w=majority", {
-    promiseLibrary: require('bluebird')
-}).then ( () => console.log('Connection to the database was successful'))
-  .catch( (err) => console.error(err));
+mongoose
+  .connect(
+    "mongodb+srv://admin:thisisapassword@buwebdev-cluster-1.j3npe.mongodb.net/api-gateway?retryWrites=true&w=majority",
+    {
+      promiseLibrary: require("bluebird"),
+    }
+  )
+  .then(() => console.log("Connection to the database was successful"))
+  .catch((err) => console.error(err));
 
 var app = express();
 

@@ -9,7 +9,7 @@
 */
 
 // Import Mongoose
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
 // Create a user schema in Mongoose
 var userSchema = new mongoose.Schema({
